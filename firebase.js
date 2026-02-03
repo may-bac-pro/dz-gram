@@ -15,3 +15,19 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+
+const auth = getAuth(app);
+
+document.getElementById('signupBtn').addEventListener('click', () => {
+  const email = document.getElementById('email').value;
+  const password = document.getElementById('password').value;
+
+  createUserWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      document.getElementById('signupMessage').innerText = "Account created successfully!";
+    })
+    .catch((error) => {
+      document.getElementById('signupMessage').innerText = error.message;
+    });
+});
