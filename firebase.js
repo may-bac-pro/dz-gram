@@ -1,9 +1,8 @@
-// Import the functions you need from the SDKs you need
+// Import Firebase
 import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 
-// Your web app's Firebase configuration
+// Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyChOnmVexMUh8i3Y-yZsGfyMU-zqTw6nu0",
   authDomain: "dz-gram.firebaseapp.com",
@@ -15,34 +14,43 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-
 const auth = getAuth(app);
 
+// Sign Up
 document.getElementById('signupBtn').addEventListener('click', () => {
   const email = document.getElementById('email').value;
   const password = document.getElementById('password').value;
 
   createUserWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      document.getElementById('signupMessage').innerText = "Account created successfully!";
+    .then(() => {
+      document.getElementById('signupMessage').innerText = "Account created!";
     })
-    .catch((error) => {
-      document.getElementById('signupMessage').innerText = error.message;
+    .catch((err) => {
+      document.getElementById('signupMessage').innerText = err.message;
     });
 });
-import { signInWithEmailAndPassword } from "firebase/auth";
 
+// Login
 document.getElementById('loginBtn').addEventListener('click', () => {
   const email = document.getElementById('loginEmail').value;
   const password = document.getElementById('loginPassword').value;
 
   signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      document.getElementById('loginMessage').innerText = "Logged in successfully!";
-      // هنا يمكن إضافة كود إظهار feed dz-gram بعد تسجيل الدخول
+    .then(() => {
+      document.getElementById('loginMessage').innerText = "Logged in!";
     })
-    .catch((error) => {
-      document.getElementById('loginMessage').innerText = error.message;
+    .catch((err) => {
+      document.getElementById('loginMessage').innerText = err.message;
     });
+});
+
+// Show feed after login
+onAuthStateChanged(auth, (user) => {
+  if(user){
+    document.getElementById('auth').style.display = "none";
+    document.getElementById('feed').style.display = "block";
+  } else {
+    document.getElementById('auth').style.display = "block";
+    document.getElementById('feed').style.display = "none";
+  }
 });
