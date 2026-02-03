@@ -31,3 +31,18 @@ document.getElementById('signupBtn').addEventListener('click', () => {
       document.getElementById('signupMessage').innerText = error.message;
     });
 });
+import { signInWithEmailAndPassword } from "firebase/auth";
+
+document.getElementById('loginBtn').addEventListener('click', () => {
+  const email = document.getElementById('loginEmail').value;
+  const password = document.getElementById('loginPassword').value;
+
+  signInWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      document.getElementById('loginMessage').innerText = "Logged in successfully!";
+      // هنا يمكن إضافة كود إظهار feed dz-gram بعد تسجيل الدخول
+    })
+    .catch((error) => {
+      document.getElementById('loginMessage').innerText = error.message;
+    });
+});
